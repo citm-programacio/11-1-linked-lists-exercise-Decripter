@@ -1,76 +1,89 @@
 #include <iostream>
 using namespace std;
 
+
+
 class Lista
 {
 private:
     struct nodo
     {
-       int valor;
-       nodo* siguiente;
-       nodo* anterior;
+    int valor;
+    nodo* anterior;
+    nodo* siguiente;
     };
 
+    nodo* aux = nullptr;
     nodo* primero = nullptr;
     nodo* ultimo = nullptr;
-    int tamano = 0;
 
 public:
     Lista() {};
-    void pushfront(int valor)
+    void pushback(int n)
     {
-        if (tamano == 0)
+        if (primero == nullptr)
         {
-            primero = ultimo = new nodo;
-            primero->valor = valor;
-            primero->siguiente = nullptr;
+                primero = new nodo();
+                ultimo = new nodo();
+
+                primero->valor = n;
+                primero->anterior = nullptr;
+                primero->siguiente = nullptr;
+
+                ultimo = primero;
+        }
+
+        else
+        {
+            aux = new nodo;
+            
+            aux->valor = n;
+            aux->anterior = ultimo;
+            aux->siguiente = nullptr;
+
+            ultimo->siguiente = aux;
+            ultimo = aux;
+        }
+
+    };
+
+    void pushfront(int n)
+    {
+        if (primero == nullptr)
+        {
+            primero = new nodo;
+            ultimo = new nodo;
+
+            primero->valor = n;
             primero->anterior = nullptr;
+            primero->siguiente = nullptr;
+
+            ultimo = primero;
         }
+
         else
         {
-            nodo* node = new nodo;
-            node->valor = valor;
-            node->siguiente = primero;
-            node->anterior = nullptr;
-            primero->anterior = node;
-            primero = node;
+            aux = new nodo;
+
+            aux->valor = n;
+            aux->siguiente = primero;
+            aux->anterior = nullptr;
+
+            primero->anterior = aux;
+            primero = aux;
         };
-        tamano++;
+
+        ultimo->siguiente = nullptr;
     };
 
-    void pushback(int valor)
+    void imprimir()
     {
-        if (tamano == 0)
+        aux = primero;
+        while (aux != nullptr)
         {
-            primero = ultimo = new nodo;
-            ultimo->valor = valor;
-            ultimo->anterior = nullptr;
-            ultimo->siguiente = nullptr;
-
-        }
-        else
-        {
-            nodo* node = new nodo;
-            node->valor = valor;
-            node->siguiente = nullptr;
-            node->anterior = primero;
-            primero->siguiente = node;
-            ultimo = node;
-
-        }
-
-    };
-
-    void print()
-    {
-        nodo* actual = primero;
-
-        while (actual != nullptr)
-        {
-            cout << actual->valor << " | ";
-            actual = actual->siguiente;
+            cout << aux->valor <<"  ";
+            aux = aux->siguiente;
         };
-        cout << endl;
     };
 
 };
@@ -79,10 +92,26 @@ public:
 int main()
 {
     Lista test;
-    test.pushfront(6);
-    test.pushfront(3);
-    test.pushfront(8);
+    test.pushback(1);
+    test.pushback(2);
+    test.pushback(3);
+    test.pushback(4);
 
-    test.print();
+    test.pushfront(7);
+    test.pushfront(10);
+    test.pushback(5);
 
+    test.imprimir();
 }
+
+/*
+========================================================================================================================
+  MMP""MM""YMM `7MM"""Mq.  `YMM'   `MM'    `7MMF'  `7MMF'      db      `7MM"""Mq.  `7MM"""Yb.   `7MM"""YMM  `7MM"""Mq.
+  P'   MM   `7   MM   `MM.   VMA   ,V        MM      MM       ;MM:       MM   `MM.   MM    `Yb.   MM    `7    MM   `MM.
+       MM        MM   ,M9     VMA ,V         MM      MM      ,V^MM.      MM   ,M9    MM     `Mb   MM   d      MM   ,M9
+       MM        MMmmdM9       VMMP          MMmmmmmmMM     ,M  `MM      MMmmdM9     MM      MM   MMmmMM      MMmmdM9
+       MM        MM  YM.        MM           MM      MM     AbmmmqMA     MM  YM.     MM     ,MP   MM   Y  ,   MM  YM.
+       MM        MM   `Mb.      MM           MM      MM    A'     VML    MM   `Mb.   MM    ,dP'   MM     ,M   MM   `Mb.
+     .JMML.    .JMML. .JMM.   .JMML.       .JMML.  .JMML..AMA.   .AMMA..JMML. .JMM..JMMmmmdP'   .JMMmmmmMMM .JMML. .JMM.
+==========================================================================================================================
+*/
