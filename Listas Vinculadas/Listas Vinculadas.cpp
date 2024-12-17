@@ -1,8 +1,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 class Lista
 {
 private:
@@ -16,9 +14,11 @@ private:
     nodo* aux = nullptr;
     nodo* primero = nullptr;
     nodo* ultimo = nullptr;
+    int cant_nodos = 0;
 
 public:
     Lista() {};
+
     void pushback(int n)
     {
         if (primero == nullptr)
@@ -45,6 +45,7 @@ public:
             ultimo = aux;
         }
 
+        cant_nodos++;
     };
 
     void pushfront(int n)
@@ -73,7 +74,8 @@ public:
             primero = aux;
         };
 
-        ultimo->siguiente = nullptr;
+        
+        cant_nodos++;
     };
 
     void imprimir()
@@ -81,9 +83,77 @@ public:
         aux = primero;
         while (aux != nullptr)
         {
-            cout << aux->valor <<"  ";
+            cout << aux->valor <<"-> ";
             aux = aux->siguiente;
         };
+
+        cout << endl << "Primero: " << primero->valor << endl;
+
+        cout << "Ultimo: " << ultimo->valor << endl;
+
+        cout << "Cantidad nodos: " << cant_nodos << endl;
+    };
+
+    bool buscar(int num)
+    {
+        aux = new nodo;
+        aux = primero;
+            while (aux != nullptr)
+            {
+                if (aux->valor = num)
+                {
+                    return true;
+                };
+                aux = aux->siguiente;
+            };
+            return false;
+    };
+
+    void insertar(int pos, int n)
+    {
+        if (pos == 0)
+        {
+            /*aux = new nodo;
+            aux->valor = n;
+            aux->anterior = nullptr;
+            aux->siguiente = primero;
+
+            primero->anterior = aux;
+            primero = aux;
+            cant_nodos++;*/
+            pushfront(n);//reemplazado con un pushfront
+        }
+        if (pos > cant_nodos)
+        {
+            pushback(n);
+        }
+        else
+        {
+            nodo* actual = new nodo;
+            actual = primero;//creamos un nodo para navegar y hacer los cambios
+            nodo* preactual = new nodo;
+            int index = 0;//contador para el bucle
+            while (index < pos)
+            {
+                actual = actual->siguiente;
+                index++;
+            };
+
+           
+            aux = new nodo;//nuevo
+            aux->valor = n;
+            aux->siguiente = actual;//el siguiente del nuevo será el actual
+            aux->anterior = actual->anterior; //el anterior del nuevo será el anterior del actual
+
+            if (actual->anterior != nullptr)
+            {
+                actual->anterior->siguiente = aux; //el siguiente del anterior (del actual) será el nuevo
+            };
+
+            actual->anterior = aux; //el anterior del actual será el nuevo
+            cant_nodos++;
+        };
+
     };
 
 };
@@ -94,14 +164,31 @@ int main()
     Lista test;
     test.pushback(1);
     test.pushback(2);
-    test.pushback(3);
-    test.pushback(4);
 
+    test.pushback(3);
+    test.pushfront(4);
+    test.insertar(0, 6);
+    test.pushfront(8);
+    test.insertar(50, 40);
+
+    test.insertar(3, 100);
+
+    /*
     test.pushfront(7);
     test.pushfront(10);
-    test.pushback(5);
+    test.pushback(5);*/
 
     test.imprimir();
+
+    if (test.buscar(3) == true)
+    {
+        cout << "zi";
+    }
+    else
+    {
+        cout << "no";
+    };
+    
 }
 
 /*
